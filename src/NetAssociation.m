@@ -185,8 +185,11 @@ static double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * 
     struct timeval  now;
 	gettimeofday(&now, NULL);
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
 	ntpClientSendTime.fullSeconds = now.tv_sec + JAN_1970;
 	ntpClientSendTime.partSeconds = uSec2Frac(now.tv_usec);
+#pragma clang diagnostic pop
 
     wireData[10] = htonl(now.tv_sec + JAN_1970);                            // Transmit Timestamp
 	wireData[11] = htonl(uSec2Frac(now.tv_usec));
@@ -291,8 +294,11 @@ static double ntpDiffSeconds(struct ntpTimestamp * start, struct ntpTimestamp * 
     struct timeval          arrival_time;
 	gettimeofday(&arrival_time, NULL);
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
     ntpClientRecvTime.fullSeconds = arrival_time.tv_sec + JAN_1970;     // Transmit Timestamp coarse
 	ntpClientRecvTime.partSeconds = uSec2Frac(arrival_time.tv_usec);    // Transmit Timestamp fine
+#pragma clang diagnostic pop
 
     uint32_t                hostData[12];
     [data getBytes:hostData length:48];
